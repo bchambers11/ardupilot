@@ -421,7 +421,7 @@ private:
 #if OSD_ENABLED == ENABLED
     AP_OSD osd;
 #endif
-    
+
     // Variables for extended status MAVLink messages
     uint32_t control_sensors_present;
     uint32_t control_sensors_enabled;
@@ -966,6 +966,9 @@ private:
 #if MODE_ZIGZAG_ENABLED == ENABLED
     ModeZigZag mode_zigzag;
 #endif
+#if MODE_AUTOROTO == ENABLED
+    ModeAutoRoto mode_autoroto;
+#endif 
 
     // mode.cpp
     Mode *mode_from_mode_num(const uint8_t mode);

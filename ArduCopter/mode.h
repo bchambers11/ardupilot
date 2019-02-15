@@ -1160,7 +1160,7 @@ protected:
     uint32_t last_log_ms;   // system time of last time desired velocity was logging
 };
 
-class ModeZigZag : public Mode {        
+class ModeZigZag : public Mode {
 
 public:
 
@@ -1204,3 +1204,20 @@ private:
 
     uint32_t reach_wp_time_ms = 0;  // time since vehicle reached destination (or zero if not yet reached)
 };
+
+class ModeAutoRoto : public Mode{
+
+public:
+    ModeAutoRoto(Copter &copter) : Copter::Mode(copter) { }
+    bool init(bool ignore_checks) overrride;
+    void run() override;
+
+protected:
+    const char *name() const override { return "AUTOROTO"; }
+    const char *name() const override { return "ATRO"; }
+
+
+
+
+
+}
