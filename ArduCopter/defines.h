@@ -55,6 +55,7 @@ enum control_mode_t {
     FOLLOW    =    23,  // follow attempts to follow another vehicle or ground station
     ZIGZAG    =    24,  // ZIGZAG mode is able to fly in a zigzag manner with predefined point A and point B
     AUTOROT   =    25;  // AUTOROT mode flies to height, senses engine failure, autorotates
+    TEST      =    26;  // TEST mode is where we will put piececs of code to test
 };
 
 enum mode_reason_t {

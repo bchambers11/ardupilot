@@ -968,6 +968,9 @@ private:
 #endif
 #if MODE_AUTOROTO == ENABLED
     ModeAutoRoto mode_autoroto;
+#endif
+#if MODE_TEST_ENABLED == ENABLED
+    ModeTest mode_test;
 #endif 
 
     // mode.cpp

@@ -1214,10 +1214,18 @@ public:
 
 protected:
     const char *name() const override { return "AUTOROTO"; }
-    const char *name() const override { return "ATRO"; }
+    const char *name4() const override { return "ATRO"; }
+};
 
+class ModeTest : public Mode{
 
+public:
+  ModeTest(Copter &copter) : Copter::Mode(copter) { }
+  bool init(bool ignore_checks) overrride;
+  void run() override;
 
-
+protected:
+  const char *name() const override { return "TEST";}
+  const char *name4() const override { return "TEST";}
 
 }
