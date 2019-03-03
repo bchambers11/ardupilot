@@ -966,12 +966,12 @@ private:
 #if MODE_ZIGZAG_ENABLED == ENABLED
     ModeZigZag mode_zigzag;
 #endif
-#if MODE_AUTOROTO == ENABLED
+//#if MODE_AUTOROTO == ENABLED
     ModeAutoRoto mode_autoroto;
-#endif
-#if MODE_TEST_ENABLED == ENABLED
+//#endif
+//#if MODE_TEST_ENABLED == ENABLED
     ModeTest mode_test;
-#endif 
+//#endif
 
     // mode.cpp
     Mode *mode_from_mode_num(const uint8_t mode);
