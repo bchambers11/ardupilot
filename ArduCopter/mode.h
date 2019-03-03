@@ -1209,7 +1209,7 @@ class ModeAutoRoto : public Mode{
 
 public:
     ModeAutoRoto(Copter &copter) : Copter::Mode(copter) { }
-    bool init(bool ignore_checks) overrride;
+    bool init(bool ignore_checks) override;
     void run() override;
 
 protected:
@@ -1221,7 +1221,7 @@ class ModeTest : public Mode{
 
 public:
   ModeTest(Copter &copter) : Copter::Mode(copter) { }
-  bool init(bool ignore_checks) overrride;
+  bool init(bool ignore_checks) override;
   void run() override;
 
 protected:
