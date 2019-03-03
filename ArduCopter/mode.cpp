@@ -159,16 +159,16 @@ Copter::Mode *Copter::mode_from_mode_num(const uint8_t mode)
             ret = &mode_zigzag;
             break;
 #endif
-#if MODE_AUTOROTO == ENABLED
+//#if MODE_AUTOROTO == ENABLED
         case AUTOROT:
             ret = &mode_autoroto;
             break;
-#endif
-#if MODE_TEST_ENABLED == ENABLED
+//#endif
+//#if MODE_TEST_ENABLED == ENABLED
         case TEST:
             ret = &mode_test;
             break;
-#endif
+//#endif
         default:
             break;
     }
