@@ -1214,9 +1214,18 @@ public:
     void run() override;
     //bool requires_GPS() const override { return false; }
 
+
 protected:
     const char *name() const override { return "AUTOROT"; }
     const char *name4() const override { return "ATRO"; }
+
+private:
+    void update_states();
+    bool detectEngineFailure();
+    void zero_tau();
+    void max_tau();
+    void max_F();
+
 };
 
 class ModeTest : public Mode {
