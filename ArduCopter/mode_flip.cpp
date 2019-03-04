@@ -32,188 +32,166 @@
 #define FLIP_PITCH_BACK      1      // used to set flip_dir
 #define FLIP_PITCH_FORWARD  -1      // used to set flip_dir
 
+//state variables
+private float V_z;
+private float rpm;
+private float height;
+
+bool engineFailed = false;
+bool NRreached = false;
+bool landing = false;
+uint16_t idle_count = 0;
+
+private float oneMinusAlpha = 0.5;
+private float avg = 0;
+private float weightedSum = 0;
+private float weightedCount = 0;
+private float reading, lastReading, acc;
+
 // flip_init - initialise flip controller
 bool Copter::ModeFlip::init(bool ignore_checks)
 {
-    // only allow flip from ACRO, Stabilize, AltHold or Drift flight modes
-    if (copter.control_mode != ACRO &&
-        copter.control_mode != STABILIZE &&
-        copter.control_mode != ALT_HOLD &&
-        copter.control_mode != FLOWHOLD) {
-        return false;
-    }
+  //initialize state
+  AutoRotationState state = AutoRot_Takeoff;
+   // if landed and the mode we're switching from does not have manual throttle and the throttle stick is too high
+   if (motors->armed() && ap.land_complete && !copter.flightmode->has_manual_throttle() &&
+           (get_pilot_desired_throttle(channel_throttle->get_control_in(), copter.g2.acro_thr_mid) > copter.get_non_takeoff_throttle())) {
+       return false;
+   }
 
-    // if in acro or stabilize ensure throttle is above zero
-    if (ap.throttle_zero && (copter.control_mode == ACRO || copter.control_mode == STABILIZE)) {
-        return false;
-    }
-
-    // ensure roll input is less than 40deg
-    if (abs(channel_roll->get_control_in()) >= 4000) {
-        return false;
-    }
-
-    // only allow flip when flying
-    if (!motors->armed() || ap.land_complete) {
-        return false;
-    }
-
-    // capture original flight mode so that we can return to it after completion
-    orig_control_mode = copter.control_mode;
-
-    // initialise state
-    _state = Flip_Start;
-    start_time_ms = millis();
-
-    roll_dir = pitch_dir = 0;
-
-    // choose direction based on pilot's roll and pitch sticks
-    if (channel_pitch->get_control_in() > 300) {
-        pitch_dir = FLIP_PITCH_BACK;
-    } else if (channel_pitch->get_control_in() < -300) {
-        pitch_dir = FLIP_PITCH_FORWARD;
-    } else if (channel_roll->get_control_in() >= 0) {
-        roll_dir = FLIP_ROLL_RIGHT;
-    } else {
-        roll_dir = FLIP_ROLL_LEFT;
-    }
-
-    // log start of flip
-    Log_Write_Event(DATA_FLIP_START);
-
-    // capture current attitude which will be used during the Flip_Recovery stage
-    const float angle_max = copter.aparm.angle_max;
-    orig_attitude.x = constrain_float(ahrs.roll_sensor, -angle_max, angle_max);
-    orig_attitude.y = constrain_float(ahrs.pitch_sensor, -angle_max, angle_max);
-    orig_attitude.z = ahrs.yaw_sensor;
-
-    return true;
+   return true;
 }
 
 // run - runs the flip controller
 // should be called at 100hz or more
 void Copter::ModeFlip::run()
 {
-    // if pilot inputs roll > 40deg or timeout occurs abandon flip
-    if (!motors->armed() || (abs(channel_roll->get_control_in()) >= 4000) || (abs(channel_pitch->get_control_in()) >= 4000) || ((millis() - start_time_ms) > FLIP_TIMEOUT_MS)) {
-        _state = Flip_Abandon;
-    }
+  //update states
+  update_states();
+  //stabilize helicopter
+  attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
 
-    // get pilot's desired throttle
-    float throttle_out = get_pilot_desired_throttle(channel_throttle->get_control_in());
 
-    // get corrected angle based on direction and axis of rotation
-    // we flip the sign of flip_angle to minimize the code repetition
-    int32_t flip_angle;
+  //state determination could turn into its own function
+  if (height > 40 && state == AutoRot_Takeoff)       //change 40 to a predefed value
+  {
+      state = AutoRot_Idle;
+  }
+  else if (engineFailed == true && state == AutoRot_Idle)
+  {
+      state = AutoRot_Inititate;
+  }
+  else if (NRreached == true && state == AutoRot_Inititate)
+  {
+      state = AutoRot_Freefall;
+  }
+  else if(landing == true && state == AutoRot_Freefall)
+  {
+    state = AutoRot_Landing;
+  }
 
-    if (roll_dir != 0) {
-        flip_angle = ahrs.roll_sensor * roll_dir;
-    } else {
-        flip_angle = ahrs.pitch_sensor * pitch_dir;
-    }
+  switch (state) {
 
-    // state machine
-    switch (_state) {
+    case AutoRot_Takeoff:
+        //go to 40 meters
+        pos_control->set_alt_target(40); //not sure the units here yet
+        break;
 
-    case Flip_Start:
-        // under 45 degrees request 400deg/sec roll or pitch
-        attitude_control->input_rate_bf_roll_pitch_yaw(FLIP_ROTATION_RATE * roll_dir, FLIP_ROTATION_RATE * pitch_dir, 0.0);
-
-        // increase throttle
-        throttle_out += FLIP_THR_INC;
-
-        // beyond 45deg lean angle move to next stage
-        if (flip_angle >= 4500) {
-            if (roll_dir != 0) {
-                // we are rolling
-            _state = Flip_Roll;
-            } else {
-                // we are pitching
-                _state = Flip_Pitch_A;
+    case AutoRot_Idle:
+        pos_control->set_alt_target(40);//hold at 40m
+        //need to alllow user to cut engine
+        engineFailed = detectEngineFailure();
+        //if the wait time has passsed cut the engine -> can make this random
+        if(idle_count > WAIT_TIME)    //need define for WAIT_TIME
+        {
+          _motors.rcwrite(AP_MOTORS_HELI_SINGLE_RSC, 0);     //_motors should be accessible from here(?)
         }
+        idle_count ++;
+
+        break;
+
+    case AutoRot_Inititate:
+        min_tau();   //increase the rotor speed to 1.2 NR
+        if(rpm > 1.15*NR)   //NR needs to be predef also
+        {
+          NRreached = true;
         }
         break;
 
-    case Flip_Roll:
-        // between 45deg ~ -90deg request 400deg/sec roll
-        attitude_control->input_rate_bf_roll_pitch_yaw(FLIP_ROTATION_RATE * roll_dir, 0.0, 0.0);
-        // decrease throttle
-        throttle_out = MAX(throttle_out - FLIP_THR_DEC, 0.0f);
-
-        // beyond -90deg move on to recovery
-        if ((flip_angle < 4500) && (flip_angle > -9000)) {
-            _state = Flip_Recover;
-        }
+    case AutoRot_Freefall:
+        zero_tau();      //keep the rotor speed constant
+        //check for if it is time to land
+        landing = checkForLanding();  //this function will determine if its time to land
         break;
 
-    case Flip_Pitch_A:
-        // between 45deg ~ -90deg request 400deg/sec pitch
-        attitude_control->input_rate_bf_roll_pitch_yaw(0.0f, FLIP_ROTATION_RATE * pitch_dir, 0.0);
-        // decrease throttle
-        throttle_out = MAX(throttle_out - FLIP_THR_DEC, 0.0f);
+    case AutoRot_Landing:
+        max_F();  //Maximize upward acceleration to slow down
 
-        // check roll for inversion
-        if ((labs(ahrs.roll_sensor) > 9000) && (flip_angle > 4500)) {
-            _state = Flip_Pitch_B;
-        }
-        break;
-
-    case Flip_Pitch_B:
-        // between 45deg ~ -90deg request 400deg/sec pitch
-        attitude_control->input_rate_bf_roll_pitch_yaw(0.0, FLIP_ROTATION_RATE * pitch_dir, 0.0);
-        // decrease throttle
-        throttle_out = MAX(throttle_out - FLIP_THR_DEC, 0.0f);
-
-        // check roll for inversion
-        if ((labs(ahrs.roll_sensor) < 9000) && (flip_angle > -4500)) {
-            _state = Flip_Recover;
-        }
-        break;
-
-    case Flip_Recover: {
-        // use originally captured earth-frame angle targets to recover
-        attitude_control->input_euler_angle_roll_pitch_yaw(orig_attitude.x, orig_attitude.y, orig_attitude.z, false);
-
-        // increase throttle to gain any lost altitude
-        throttle_out += FLIP_THR_INC;
-
-        float recovery_angle;
-        if (roll_dir != 0) {
-            // we are rolling
-            recovery_angle = fabsf(orig_attitude.x - (float)ahrs.roll_sensor);
-        } else {
-            // we are pitching
-            recovery_angle = fabsf(orig_attitude.y - (float)ahrs.pitch_sensor);
-        }
-
-        // check for successful recovery
-        if (fabsf(recovery_angle) <= FLIP_RECOVERY_ANGLE) {
-            // restore original flight mode
-            if (!copter.set_mode(orig_control_mode, MODE_REASON_FLIP_COMPLETE)) {
-                // this should never happen but just in case
-                copter.set_mode(STABILIZE, MODE_REASON_UNKNOWN);
-            }
-            // log successful completion
-            Log_Write_Event(DATA_FLIP_END);
-        }
-        break;
-    }
-    case Flip_Abandon:
-        // restore original flight mode
-        if (!copter.set_mode(orig_control_mode, MODE_REASON_FLIP_COMPLETE)) {
-            // this should never happen but just in case
-            copter.set_mode(STABILIZE, MODE_REASON_UNKNOWN);
-        }
-        // log abandoning flip
-        copter.Log_Write_Error(ERROR_SUBSYSTEM_FLIP,ERROR_CODE_FLIP_ABANDONED);
-        break;
-    }
-
-    // set motors to full range
-    motors->set_desired_spool_state(AP_Motors::DESIRED_THROTTLE_UNLIMITED);
-
-    // output pilot's throttle without angle boost
-    attitude_control->set_throttle_out(throttle_out, false, g.throttle_filt);
+  }
 }
+
+private void update_states()
+{
+  rpm = RPM.get_rpm(0);
+  //these two functions for getting variables need to be tested
+  height = _inav.get_altitude();
+  V_z = _inav.get_velocity_z();
+}
+
+private bool detectEngineFailure()
+{
+  lastReading = reading;
+  reading = RPM.get_rpm(0);  //still needs to be tested
+  acc = lastReading - reading;
+
+  weightedSum = acc+oneMinusAlpha*weightedSum;
+  weightedCount = 1 + weightedCount;
+  avg = weightedSum/weightedCount;
+
+  if(avg<cutoff) { return true; }
+  else { return false; }
+
+}
+
+private void zero_tau()
+{
+  phi_desired = 0.2272322/(rpm - 649.935288)
+  - 1403.8166*V_z/(rpm + 65.3905)
+  - 0.0199812*V_z
+  - 4.0994168;
+
+  phi_desired_scaled = phi_desired * k; //throttle must be 0->1
+  attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+
+}
+
+private void max_tau()
+{
+  phi_desired = -4.27058949/(rpm + 1.02102643)
+ - 18.66648244*V_z*V_z/(rpm - 12.31192228)
+ + 13.48316539*V_z/rpm
+ + 0.02156654*V_z*V_z
+ - 1.45204798*V_z
+ + 14.98632206;
+
+ phi_desired_scaled = phi_desired*k;
+ attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+}
+
+private void max_F()
+{
+  phi_desired = 3.31448333/(rpm + 46.4440510)
+ - 24.6467786*V_z*V_z/(rpm + 9.07472533)
+ + 55.4865572*V_z/rpm
+ + 0.0234441090*V_z*V_z
+ - 1.18983342*V_z
+ + 8.71212789;
+
+phi_desired_scaled = phi_desired*k;
+attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+
+}
+
+
 
 #endif

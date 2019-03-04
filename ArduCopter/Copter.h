@@ -970,7 +970,7 @@ private:
 //    ModeAutoRoto mode_autoroto;
 //#endif
 //#if MODE_TEST_ENABLED == ENABLED
-    ModeTest mode_test;
+//    ModeTest mode_test;
 //#endif
 
     // mode.cpp
