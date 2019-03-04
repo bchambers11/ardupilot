@@ -33,20 +33,20 @@
 #define FLIP_PITCH_FORWARD  -1      // used to set flip_dir
 
 //state variables
-private float V_z;
-private float rpm;
-private float height;
+float V_z;
+float rpm;
+float height;
 
 bool engineFailed = false;
 bool NRreached = false;
 bool landing = false;
 uint16_t idle_count = 0;
 
-private float oneMinusAlpha = 0.5;
-private float avg = 0;
-private float weightedSum = 0;
-private float weightedCount = 0;
-private float reading, lastReading, acc;
+float oneMinusAlpha = 0.5;
+float avg = 0;
+float weightedSum = 0;
+float weightedCount = 0;
+float reading, lastReading, acc;
 
 // flip_init - initialise flip controller
 bool Copter::ModeFlip::init(bool ignore_checks)
