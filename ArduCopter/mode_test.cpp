@@ -17,20 +17,20 @@ bool Copter::ModeTest::init(bool ignore_checks)
 void Copter::ModeTest::run()
 {
   //PUT TEST CODE HERE
-  DataFlash_Class::instance()->Log_Write("TEST", "TimeUS,Alt,rpm1",
-                                         "smq", // units: seconds, meters
-                                         "FB0", // mult: 1e-6, 1e-2
-                                         "QfQ", // format: uint64_t, float
-                                         AP_HAL::micros64(),
-                                         (double)alt_in_cm)
-                                         (double)rpm_in_rot/s;
+  //DataFlash_Class::instance()->Log_Write("TEST", "TimeUS,Alt,rpm1",
+  //                                       "smq", // units: seconds, meters
+  //                                       "FB0", // mult: 1e-6, 1e-2
+  //                                       "QfQ", // format: uint64_t, float
+  //                                       AP_HAL::micros64(),
+  //                                       (double)alt_in_cm)
+  //                                       (double)rpm_in_rot/s;
 
-  DataFlash_Class::instance()->Log_Write("TEST", "TimeUS,Alt",
-                                        "sm", // units: seconds, meters
-                                        "FB", // mult: 1e-6, 1e-2
-                                        "Qf", // format: uint64_t, float
-                                        AP_HAL::micros64(),
-                                       (double)alt_in_cm);
+  //DataFlash_Class::instance()->Log_Write("TEST", "TimeUS,Alt",
+  //                                      "sm", // units: seconds, meters
+  //                                      "FB", // mult: 1e-6, 1e-2
+  //                                      "Qf", // format: uint64_t, float
+  //                                      AP_HAL::micros64(),
+  //                                     (double)alt_in_cm);
 
 }
 
