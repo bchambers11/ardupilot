@@ -967,7 +967,7 @@ private:
     ModeZigZag mode_zigzag;
 #endif
 //#if MODE_AUTOROTO == ENABLED
-    ModeAutoRoto mode_autoroto;
+//    ModeAutoRoto mode_autoroto;
 //#endif
 //#if MODE_TEST_ENABLED == ENABLED
     ModeTest mode_test;
