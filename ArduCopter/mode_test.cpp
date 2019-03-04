@@ -1,6 +1,6 @@
 #include "Copter.h"
 
-#include "mode.h"
+//#include "mode.h"
 
 bool Copter::ModeAutoRoto::init(bool ignore_checks)
 {
