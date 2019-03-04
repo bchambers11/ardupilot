@@ -1205,7 +1205,7 @@ private:
     uint32_t reach_wp_time_ms = 0;  // time since vehicle reached destination (or zero if not yet reached)
 };
 
-class ModeAutoRoto : public Mode{
+class ModeAutoRoto : public Mode {
 
 public:
     using Copter::Mode::Mode;
@@ -1218,7 +1218,7 @@ protected:
     const char *name4() const override { return "ATRO"; }
 };
 
-class ModeTest : public Mode{
+class ModeTest : public Mode {
 
 public:
   using Copter::Mode::Mode;
