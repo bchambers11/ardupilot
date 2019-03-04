@@ -9,9 +9,9 @@
  */
 
 //state variables
-private float V_z;
-private float rpm;
-private float height;
+float V_z;
+float rpm;
+float height;
 
 
 //variables for state machine
@@ -23,11 +23,11 @@ uint16_t idle_count = 0;
 
 
 //variables for detecting engine failure
-private float oneMinusAlpha = 0.5;
-private float avg = 0;
-private float weightedSum = 0;
-private float weightedCount = 0;
-private float reading, lastReading, acc;
+float oneMinusAlpha = 0.5;
+float avg = 0;
+float weightedSum = 0;
+float weightedCount = 0;
+float reading, lastReading, acc;
 
 bool Copter::ModeAutoRoto::init(bool ignore_checks)
 {
