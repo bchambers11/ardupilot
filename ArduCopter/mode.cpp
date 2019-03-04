@@ -160,14 +160,14 @@ Copter::Mode *Copter::mode_from_mode_num(const uint8_t mode)
             break;
 #endif
 //#if MODE_AUTOROTO == ENABLED
-        case AUTOROT:
-            ret = &mode_autoroto;
-            break;
+//        case AUTOROT:
+//            ret = &mode_autoroto;
+//            break;
 //#endif
 //#if MODE_TEST_ENABLED == ENABLED
-        case TEST:
-            ret = &mode_test;
-            break;
+//        case TEST:
+//            ret = &mode_test;
+//            break;
 //#endif
         default:
             break;
