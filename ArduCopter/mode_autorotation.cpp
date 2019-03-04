@@ -28,11 +28,12 @@ float avg = 0;
 float weightedSum = 0;
 float weightedCount = 0;
 float reading, lastReading, acc;
+AutoRotationState state = AutoRot_Takeoff;
+
 
 bool Copter::ModeAutoRoto::init(bool ignore_checks)
 {
   //initialize state
-  AutoRotationState state = AutoRot_Takeoff;
    // if landed and the mode we're switching from does not have manual throttle and the throttle stick is too high
    if (motors->armed() && ap.land_complete && !copter.flightmode->has_manual_throttle() &&
            (get_pilot_desired_throttle(channel_throttle->get_control_in(), copter.g2.acro_thr_mid) > copter.get_non_takeoff_throttle())) {
