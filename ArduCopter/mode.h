@@ -1228,4 +1228,4 @@ protected:
   const char *name() const override { return "TEST";}
   const char *name4() const override { return "TEST";}
 
-}
+};
