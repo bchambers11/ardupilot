@@ -2,9 +2,9 @@
 
 //#include "mode.h"
 
-bool Copter::ModeAutoRoto::init(bool ignore_checks)
+bool Copter::ModeTest::init(bool ignore_checks)
 {
-  
+
    // if landed and the mode we're switching from does not have manual throttle and the throttle stick is too high
    if (motors->armed() && ap.land_complete && !copter.flightmode->has_manual_throttle() &&
            (get_pilot_desired_throttle(channel_throttle->get_control_in(), copter.g2.acro_thr_mid) > copter.get_non_takeoff_throttle())) {
@@ -14,7 +14,7 @@ bool Copter::ModeAutoRoto::init(bool ignore_checks)
    return true;
 }
 
-void Copter::ModeAutoRoto::run()
+void Copter::ModeTest::run()
 {
   //PUT TEST CODE HERE
   DataFlash_Class::instance()->Log_Write("TEST", "TimeUS,Alt,rpm1",
