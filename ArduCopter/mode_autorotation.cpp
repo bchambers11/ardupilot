@@ -1,6 +1,6 @@
 #include "Copter.h"
 
-#include "mode.h"
+//#include "mode.h"
 
 //#if MODE_AUTOROTO_ENABLED == ENABLED
 

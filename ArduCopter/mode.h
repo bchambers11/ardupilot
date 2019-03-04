@@ -1212,8 +1212,7 @@ public:
     //ModeAutoRoto(Copter &copter) : Copter::Mode(copter) { }
     bool init(bool ignore_checks) override;
     void run() override;
-
-    bool requires_GPS() const override { return false; }
+    //bool requires_GPS() const override { return false; }
 
 protected:
     const char *name() const override { return "AUTOROT"; }
@@ -1228,7 +1227,7 @@ public:
   bool init(bool ignore_checks) override;
   void run() override;
 
-  bool requires_GPS() const override { return false; }
+  //bool requires_GPS() const override { return false; }
 
 protected:
   const char *name() const override { return "TEST";}
