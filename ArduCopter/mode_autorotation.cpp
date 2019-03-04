@@ -28,7 +28,7 @@ float avg = 0;
 float weightedSum = 0;
 float weightedCount = 0;
 float reading, lastReading, acc;
-AutoRotationState state = AutoRot_Takeoff;
+//AutoRotationState state = AutoRot_Takeoff;
 
 
 bool Copter::ModeAutoRoto::init(bool ignore_checks)
