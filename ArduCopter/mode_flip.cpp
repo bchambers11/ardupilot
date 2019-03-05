@@ -108,7 +108,7 @@ void Copter::ModeFlip::run()
   }
 }
 
-private void update_states()
+void update_states()
 {
   rpm = RPM.get_rpm(0);
   //these two functions for getting variables need to be tested
@@ -116,7 +116,7 @@ private void update_states()
   V_z = _inav.get_velocity_z();
 }
 
-private bool detectEngineFailure()
+bool detectEngineFailure()
 {
   lastReading = reading;
   reading = RPM.get_rpm(0);  //still needs to be tested
@@ -131,7 +131,7 @@ private bool detectEngineFailure()
 
 }
 
-private void zero_tau()
+void zero_tau()
 {
   phi_desired = 0.2272322/(rpm - 649.935288)
   - 1403.8166*V_z/(rpm + 65.3905)
@@ -143,7 +143,7 @@ private void zero_tau()
 
 }
 
-private void max_tau()
+void max_tau()
 {
   phi_desired = -4.27058949/(rpm + 1.02102643)
  - 18.66648244*V_z*V_z/(rpm - 12.31192228)
@@ -156,7 +156,7 @@ private void max_tau()
  attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 }
 
-private void max_F()
+void max_F()
 {
   phi_desired = 3.31448333/(rpm + 46.4440510)
  - 24.6467786*V_z*V_z/(rpm + 9.07472533)
@@ -170,7 +170,7 @@ attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
 
-private bool checkForLanding()
+bool checkForLanding()
 {
   //comparing energy will happen here
   return false;
