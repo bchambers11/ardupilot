@@ -116,7 +116,9 @@ void Copter::ModeAutoRoto::run()
 
 void update_states()
 {
-  rpm = RPM.get_rpm(0);
+  //FIX
+  //rpm = RPM.get_rpm(0);
+  rpm = 0;
   //these two functions for getting variables need to be tested
   height = _inav.get_altitude();
   V_z = _inav.get_velocity_z();
@@ -130,7 +132,9 @@ void update_states()
 bool detectEngineFailure()
 {
   lastReading = reading;
-  reading = RPM.get_rpm(0);  //still needs to be tested
+  //FIX
+  //reading = RPM.get_rpm(0);  //still needs to be tested
+  reading = 0;
   acc = lastReading - reading;
 
   weightedSum = acc+oneMinusAlpha*weightedSum;
