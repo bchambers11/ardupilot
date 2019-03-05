@@ -157,7 +157,7 @@ void zero_tau()
   - 4.0994168;
 
   float phi_desired_scaled = phi_desired * K; //throttle must be 0->1
-  attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+  //attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
 
@@ -171,7 +171,7 @@ void max_tau()
  + 14.98632206;
 
  float phi_desired_scaled = phi_desired*K;
- attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+ //attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
 
@@ -185,7 +185,7 @@ void max_F()
  + 8.71212789;
 
 float phi_desired_scaled = phi_desired*K;
-attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+//attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
 
