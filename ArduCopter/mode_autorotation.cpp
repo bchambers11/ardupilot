@@ -87,6 +87,7 @@ void Copter::ModeAutoRoto::run()
         //if the wait time has passsed cut the engine -> can make this random
         if(idle_count > WAIT_TIME)    //need define for WAIT_TIME
         {
+          //FIX THIS ASAP 
           rc_write(AP_MOTORS_HELI_SINGLE_RSC, 0);     //_motors should be accessible from here(?)
         }
         idle_count ++;
