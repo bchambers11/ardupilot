@@ -7,6 +7,10 @@
 /*
  * Init and run calls for acro flight mode
  */
+#define WAIT_TIME 100
+#define NR        2000 
+#define K         1
+
 
 //state variables
 float V_z;
@@ -144,7 +148,7 @@ private void zero_tau()
   - 0.0199812*V_z
   - 4.0994168;
 
-  phi_desired_scaled = phi_desired * k; //throttle must be 0->1
+  phi_desired_scaled = phi_desired * K; //throttle must be 0->1
   attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
@@ -157,7 +161,7 @@ private void max_tau()
  - 1.45204798*V_z
  + 14.98632206;
 
- phi_desired_scaled = phi_desired*k;
+ phi_desired_scaled = phi_desired*K;
  attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
@@ -171,7 +175,7 @@ private void max_F()
  - 1.18983342*V_z
  + 8.71212789;
 
-phi_desired_scaled = phi_desired*k;
+phi_desired_scaled = phi_desired*K;
 attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }

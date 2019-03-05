@@ -2,35 +2,10 @@
 
 #if MODE_FLIP_ENABLED == ENABLED
 
-/*
- * Init and run calls for flip flight mode
- *      original implementation in 2010 by Jose Julio
- *      Adapted and updated for AC2 in 2011 by Jason Short
- *
- *      Controls:
- *          RC7_OPTION - RC12_OPTION parameter must be set to "Flip" (AUXSW_FLIP) which is "2"
- *          Pilot switches to Stabilize, Acro or AltHold flight mode and puts ch7/ch8 switch to ON position
- *          Vehicle will Roll right by default but if roll or pitch stick is held slightly left, forward or back it will flip in that direction
- *          Vehicle should complete the roll within 2.5sec and will then return to the original flight mode it was in before flip was triggered
- *          Pilot may manually exit flip by switching off ch7/ch8 or by moving roll stick to >40deg left or right
- *
- *      State machine approach:
- *          Flip_Start (while copter is leaning <45deg) : roll right at 400deg/sec, increase throttle
- *          Flip_Roll (while copter is between +45deg ~ -90) : roll right at 400deg/sec, reduce throttle
- *          Flip_Recover (while copter is between -90deg and original target angle) : use earth frame angle controller to return vehicle to original attitude
- */
 
-#define FLIP_THR_INC        0.20f   // throttle increase during Flip_Start stage (under 45deg lean angle)
-#define FLIP_THR_DEC        0.24f   // throttle decrease during Flip_Roll stage (between 45deg ~ -90deg roll)
-#define FLIP_ROTATION_RATE  40000   // rotation rate request in centi-degrees / sec (i.e. 400 deg/sec)
-#define FLIP_TIMEOUT_MS     2500    // timeout after 2.5sec.  Vehicle will switch back to original flight mode
-#define FLIP_RECOVERY_ANGLE 500     // consider successful recovery when roll is back within 5 degrees of original
-
-#define FLIP_ROLL_RIGHT      1      // used to set flip_dir
-#define FLIP_ROLL_LEFT      -1      // used to set flip_dir
-
-#define FLIP_PITCH_BACK      1      // used to set flip_dir
-#define FLIP_PITCH_FORWARD  -1      // used to set flip_dir
+#define WAIT_TIME 100
+#define NR        2000
+#define K         1
 
 //state variables
 float V_z;
@@ -162,7 +137,7 @@ private void zero_tau()
   - 0.0199812*V_z
   - 4.0994168;
 
-  phi_desired_scaled = phi_desired * k; //throttle must be 0->1
+  phi_desired_scaled = phi_desired * K; //throttle must be 0->1
   attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
@@ -176,7 +151,7 @@ private void max_tau()
  - 1.45204798*V_z
  + 14.98632206;
 
- phi_desired_scaled = phi_desired*k;
+ phi_desired_scaled = phi_desired*K;
  attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 }
 
@@ -189,7 +164,7 @@ private void max_F()
  - 1.18983342*V_z
  + 8.71212789;
 
-phi_desired_scaled = phi_desired*k;
+phi_desired_scaled = phi_desired*K;
 attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
