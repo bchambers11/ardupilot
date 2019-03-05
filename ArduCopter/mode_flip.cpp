@@ -8,26 +8,26 @@
 #define K         1
 
 //state variables
-float V_z;
-float rpm;
-float height;
-
-bool engineFailed = false;
-bool NRreached = false;
-bool landing = false;
-uint16_t idle_count = 0;
-
-float oneMinusAlpha = 0.5;
-float avg = 0;
-float weightedSum = 0;
-float weightedCount = 0;
-float reading, lastReading, acc;
-float cutoff = 1;
-
-float phi_desired,phi_desired_scaled;
-
-
-AutoRotationState state = AutoRot_Takeoff;
+// float V_z;
+// float rpm;
+// float height;
+//
+// bool engineFailed = false;
+// bool NRreached = false;
+// bool landing = false;
+// uint16_t idle_count = 0;
+//
+// float oneMinusAlpha = 0.5;
+// float avg = 0;
+// float weightedSum = 0;
+// float weightedCount = 0;
+// float reading, lastReading, acc;
+// float cutoff = 1;
+//
+// float phi_desired,phi_desired_scaled;
+//
+//
+// AutoRotationState state = AutoRot_Takeoff;
 
 // flip_init - initialise flip controller
 bool Copter::ModeFlip::init(bool ignore_checks)
@@ -46,71 +46,71 @@ bool Copter::ModeFlip::init(bool ignore_checks)
 // run - runs the flip controller
 // should be called at 100hz or more
 void Copter::ModeFlip::run()
-{
+{}
   //update states
-  update_states();
-  //stabilize helicopter
-  attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
-
-
-  //state determination could turn into its own function
-  if (height > 40 && state == AutoRot_Takeoff)       //change 40 to a predefed value
-  {
-      state = AutoRot_Idle;
-  }
-  else if (engineFailed == true && state == AutoRot_Idle)
-  {
-      state = AutoRot_Inititate;
-  }
-  else if (NRreached == true && state == AutoRot_Inititate)
-  {
-      state = AutoRot_Freefall;
-  }
-  else if(landing == true && state == AutoRot_Freefall)
-  {
-    state = AutoRot_Landing;
-  }
-
-  switch (state) {
-
-    case AutoRot_Takeoff:
-        //go to 40 meters
-        pos_control->set_alt_target(40); //not sure the units here yet
-        break;
-
-    case AutoRot_Idle:
-        pos_control->set_alt_target(40);//hold at 40m
-        //need to alllow user to cut engine
-        engineFailed = detectEngineFailure();
-        //if the wait time has passsed cut the engine -> can make this random
-        if(idle_count > WAIT_TIME)    //need define for WAIT_TIME
-        {
-          //FIX THIS ASAP
-          //rc_write(AP_MOTORS_HELI_SINGLE_RSC, 0);     //_motors should be accessible from here(?)
-        }
-        idle_count ++;
-
-        break;
-
-    case AutoRot_Inititate:
-        max_tau();   //increase the rotor speed to 1.2 NR
-        if(rpm > 1.15*NR)   //NR needs to be predef also
-        {
-          NRreached = true;
-        }
-        break;
-
-    case AutoRot_Freefall:
-        zero_tau();      //keep the rotor speed constant
-        //check for if it is time to land
-        landing = checkForLanding();  //this function will determine if its time to land
-        break;
-
-    case AutoRot_Landing:
-        max_F();  //Maximize upward acceleration to slow down
-
-  }
-}
+//   update_states();
+//   //stabilize helicopter
+//   attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
+//
+//
+//   //state determination could turn into its own function
+//   if (height > 40 && state == AutoRot_Takeoff)       //change 40 to a predefed value
+//   {
+//       state = AutoRot_Idle;
+//   }
+//   else if (engineFailed == true && state == AutoRot_Idle)
+//   {
+//       state = AutoRot_Inititate;
+//   }
+//   else if (NRreached == true && state == AutoRot_Inititate)
+//   {
+//       state = AutoRot_Freefall;
+//   }
+//   else if(landing == true && state == AutoRot_Freefall)
+//   {
+//     state = AutoRot_Landing;
+//   }
+//
+//   switch (state) {
+//
+//     case AutoRot_Takeoff:
+//         //go to 40 meters
+//         pos_control->set_alt_target(40); //not sure the units here yet
+//         break;
+//
+//     case AutoRot_Idle:
+//         pos_control->set_alt_target(40);//hold at 40m
+//         //need to alllow user to cut engine
+//         engineFailed = detectEngineFailure();
+//         //if the wait time has passsed cut the engine -> can make this random
+//         if(idle_count > WAIT_TIME)    //need define for WAIT_TIME
+//         {
+//           //FIX THIS ASAP
+//           //rc_write(AP_MOTORS_HELI_SINGLE_RSC, 0);     //_motors should be accessible from here(?)
+//         }
+//         idle_count ++;
+//
+//         break;
+//
+//     case AutoRot_Inititate:
+//         max_tau();   //increase the rotor speed to 1.2 NR
+//         if(rpm > 1.15*NR)   //NR needs to be predef also
+//         {
+//           NRreached = true;
+//         }
+//         break;
+//
+//     case AutoRot_Freefall:
+//         zero_tau();      //keep the rotor speed constant
+//         //check for if it is time to land
+//         landing = checkForLanding();  //this function will determine if its time to land
+//         break;
+//
+//     case AutoRot_Landing:
+//         max_F();  //Maximize upward acceleration to slow down
+//
+//   }
+// }
 
 // void update_states()
 // {
