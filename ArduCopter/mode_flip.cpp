@@ -140,39 +140,39 @@ bool detectEngineFailure()
 
 void zero_tau()
 {
-  phi_desired = 0.2272322/(rpm - 649.935288)
+  float phi_desired = 0.2272322/(rpm - 649.935288)
   - 1403.8166*V_z/(rpm + 65.3905)
   - 0.0199812*V_z
   - 4.0994168;
 
-  phi_desired_scaled = phi_desired * K; //throttle must be 0->1
+  float phi_desired_scaled = phi_desired * K; //throttle must be 0->1
   attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
 
 void max_tau()
 {
-  phi_desired = -4.27058949/(rpm + 1.02102643)
+ float phi_desired = -4.27058949/(rpm + 1.02102643)
  - 18.66648244*V_z*V_z/(rpm - 12.31192228)
  + 13.48316539*V_z/rpm
  + 0.02156654*V_z*V_z
  - 1.45204798*V_z
  + 14.98632206;
 
- phi_desired_scaled = phi_desired*K;
+ float phi_desired_scaled = phi_desired*K;
  attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 }
 
 void max_F()
 {
-  phi_desired = 3.31448333/(rpm + 46.4440510)
+ float phi_desired = 3.31448333/(rpm + 46.4440510)
  - 24.6467786*V_z*V_z/(rpm + 9.07472533)
  + 55.4865572*V_z/rpm
  + 0.0234441090*V_z*V_z
  - 1.18983342*V_z
  + 8.71212789;
 
-phi_desired_scaled = phi_desired*K;
+float phi_desired_scaled = phi_desired*K;
 attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
