@@ -8,26 +8,26 @@
 #define K         1
 
 //state variables
-// float V_z;
-// float rpm;
-// float height;
-//
-// bool engineFailed = false;
-// bool NRreached = false;
-// bool landing = false;
-// uint16_t idle_count = 0;
-//
-// float oneMinusAlpha = 0.5;
-// float avg = 0;
-// float weightedSum = 0;
-// float weightedCount = 0;
-// float reading, lastReading, acc;
-// float cutoff = 1;
-//
-// float phi_desired,phi_desired_scaled;
-//
-//
-// AutoRotationState state = AutoRot_Takeoff;
+float V_z;
+float rpm;
+float height;
+
+bool engineFailed = false;
+bool NRreached = false;
+bool landing = false;
+uint16_t idle_count = 0;
+
+float oneMinusAlpha = 0.5;
+float avg = 0;
+float weightedSum = 0;
+float weightedCount = 0;
+float reading, lastReading, acc;
+float cutoff = 1;
+
+float phi_desired,phi_desired_scaled;
+
+
+AutoRotationState state = AutoRot_Takeoff;
 
 // flip_init - initialise flip controller
 bool Copter::ModeFlip::init(bool ignore_checks)
