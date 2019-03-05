@@ -170,6 +170,12 @@ attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
 
+private bool checkForLanding()
+{
+  //comparing energy will happen here
+  return false;
+}
+
 
 
 #endif

@@ -592,6 +592,7 @@ private:
   void zero_tau();
   void max_tau();
   void max_F();
+  bool checkForLanding();
 };
 
 
@@ -1214,6 +1215,7 @@ private:
     void zero_tau();
     void max_tau();
     void max_F();
+    bool checkForLanding();
 
 };
 
