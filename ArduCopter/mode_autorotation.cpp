@@ -90,7 +90,7 @@ void Copter::ModeAutoRoto::run()
         break;
 
     case AutoRot_Inititate:
-        min_tau();   //increase the rotor speed to 1.2 NR
+        max_tau();   //increase the rotor speed to 1.2 NR
         if(rpm > 1.15*NR)   //NR needs to be predef also
         {
           NRreached = true;
