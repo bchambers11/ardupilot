@@ -89,7 +89,7 @@ void Copter::ModeFlip::run()
         break;
 
     case AutoRot_Inititate:
-        min_tau();   //increase the rotor speed to 1.2 NR
+        max_tau();   //increase the rotor speed to 1.2 NR
         if(rpm > 1.15*NR)   //NR needs to be predef also
         {
           NRreached = true;
@@ -114,8 +114,10 @@ void update_states()
   //rpm = RPM.get_rpm(0);
   rpm = 0;
   //these two functions for getting variables need to be tested
-  height = _inav.get_altitude();
-  V_z = _inav.get_velocity_z();
+  //height = _inav.get_altitude();
+  //V_z = _inav.get_velocity_z();
+  height = 0;
+  V_z = 0;
 }
 
 bool detectEngineFailure()
