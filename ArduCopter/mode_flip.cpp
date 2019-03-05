@@ -22,6 +22,7 @@ float avg = 0;
 float weightedSum = 0;
 float weightedCount = 0;
 float reading, lastReading, acc;
+float cutoff = 1;
 
 AutoRotationState state = AutoRot_Takeoff;
 
