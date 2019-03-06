@@ -49,11 +49,11 @@ void Copter::ModeFlip::run()
 
   //update states
   //update_states();
-  //rpm = RPM.get_rpm(0);
+  rpm = rpm_sensor.get_rpm(0);
   height = copter.inertial_nav.get_altitude();
   //height = copter.baro_alt;
   V_z  = copter.inertial_nav.get_velocity_z();
-  rpm = 0;
+  //rpm = 0;
   //stabilize helicopter
   attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
   attitude_control->set_throttle_out(0, false, g.throttle_filt);
