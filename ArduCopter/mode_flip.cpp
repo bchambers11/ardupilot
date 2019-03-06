@@ -115,8 +115,8 @@ void Copter::ModeFlip::run()
 void update_states()
 {
   //FIX
-  rpm = RPM.get_rpm(0);
-  //rpm = 0;
+  //rpm = RPM.get_rpm(0);
+  rpm = 0;
   //these two functions for getting variables need to be tested
   height = _inav.get_altitude();
   V_z = _inav.get_velocity_z();
