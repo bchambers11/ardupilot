@@ -257,7 +257,7 @@ private:
 
 #if RPM_ENABLED == ENABLED
     AP_RPM rpm_sensor;
-    static AP_RPM our_rpm;
+    //static AP_RPM our_rpm;
 #endif
 
     // Inertial Navigation EKF
