@@ -589,9 +589,9 @@ private:
 
   void update_states();
   bool detectEngineFailure();
-  void zero_tau();
-  void max_tau();
-  void max_F();
+  float zero_tau();
+  float max_tau();
+  float max_F();
   bool checkForLanding();
 };
 
