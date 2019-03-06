@@ -146,7 +146,7 @@ bool detectEngineFailure()
 
 }
 
-void Copter::Mode::zero_tau()
+void zero_tau()
 {
   phi_desired = 0.2272322/(rpm - 649.935288)
   - 1403.8166*V_z/(rpm + 65.3905)
@@ -154,7 +154,7 @@ void Copter::Mode::zero_tau()
   - 4.0994168;
 
   phi_desired_scaled = phi_desired * K; //throttle must be 0->1
-  attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+  copter.attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
 
