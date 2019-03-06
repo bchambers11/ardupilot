@@ -50,7 +50,7 @@ void Copter::ModeFlip::run()
   //update states
   //update_states();
   //rpm = RPM.get_rpm(0);
-  height = _inav.get_altitude();
+  float height = _inav.get_altitude();
   V_z = _inav.get_velocity_z();
   rpm = 0;
   //height = 0;
