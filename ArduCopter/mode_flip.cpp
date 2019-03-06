@@ -48,7 +48,7 @@ bool Copter::ModeFlip::init(bool ignore_checks)
 void Copter::ModeFlip::run()
 {
   attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
-  motors->rc_write(AP_MOTORS_HELI_SINGLE_RSC,0);
+  //motors->rc_write(AP_MOTORS_HELI_SINGLE_RSC,0);
 }
   //update states
 //   update_states();
