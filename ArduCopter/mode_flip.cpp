@@ -99,6 +99,8 @@ void Copter::ModeFlip::run()
 
     case AutoRot_Inititate:
         max_tau();   //increase the rotor speed to 1.2 NR
+        attitude_control->set_throttle(phi_desired_scaled, false, g.throttle_filt);
+
         if(rpm > 1.15*NR)   //NR needs to be predef also
         {
           NRreached = true;
@@ -107,13 +109,15 @@ void Copter::ModeFlip::run()
 
     case AutoRot_Freefall:
         phi_desired_scaled = zero_tau();      //keep the rotor speed constant
-        attitude_control.set_throttle(phi_desired_scaled, false, g.throttle_filt);
+        attitude_control->set_throttle(phi_desired_scaled, false, g.throttle_filt);
         //check for if it is time to land
         landing = checkForLanding();  //this function will determine if its time to land
         break;
 
     case AutoRot_Landing:
         max_F();  //Maximize upward acceleration to slow down
+        attitude_control->set_throttle(phi_desired_scaled, false, g.throttle_filt);
+
 
   }
 }
