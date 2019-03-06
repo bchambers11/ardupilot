@@ -50,14 +50,10 @@ void Copter::ModeFlip::run()
   //update states
   //update_states();
   //rpm = RPM.get_rpm(0);
-  //height = _inav.get_altitude();
-  //height = copter.inertial_nav.get_altitude();
-  height = copter.baro_alt;
+  height = copter.inertial_nav.get_altitude();
+  //height = copter.baro_alt;
   V_z  = copter.inertial_nav.get_velocity_z();
-  //V_z = _inav.get_velocity_z();
   rpm = 0;
-  //height = 0;
-  //V_z = 0;
   //stabilize helicopter
   attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
   attitude_control->set_throttle_out(0, false, g.throttle_filt);
@@ -150,7 +146,7 @@ bool detectEngineFailure()
 
 }
 
-void zero_tau()
+void Copter::Mode::zero_tau()
 {
   phi_desired = 0.2272322/(rpm - 649.935288)
   - 1403.8166*V_z/(rpm + 65.3905)
