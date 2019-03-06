@@ -9,7 +9,7 @@
 
 //state variables
 float V_z;
-float rpm1;
+float rpm;
 float height;
 
 bool engineFailed = false;
@@ -49,7 +49,7 @@ void Copter::ModeFlip::run()
 
   //update states
   //update_states();
-  rpm1 = rpm.get_rpm(0);
+  rpm = our_rpm.get_rpm(0);
   height = copter.inertial_nav.get_altitude();
   //height = copter.baro_alt;
   V_z  = copter.inertial_nav.get_velocity_z();
@@ -101,7 +101,7 @@ void Copter::ModeFlip::run()
         max_tau();   //increase the rotor speed to 1.2 NR
         attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
-        if(rpm1 > 1.15*NR)   //NR needs to be predef also
+        if(rpm > 1.15*NR)   //NR needs to be predef also
         {
           NRreached = true;
         }
@@ -153,8 +153,8 @@ bool Copter::ModeFlip::detectEngineFailure()
 
 float Copter::ModeFlip::zero_tau()
 {
-  phi_desired = 0.2272322/(rpm1 - 649.935288)
-  - 1403.8166*V_z/(rpm1 + 65.3905)
+  phi_desired = 0.2272322/(rpm - 649.935288)
+  - 1403.8166*V_z/(rpm + 65.3905)
   - 0.0199812*V_z
   - 4.0994168;
 
@@ -164,9 +164,9 @@ float Copter::ModeFlip::zero_tau()
 
 float Copter::ModeFlip::max_tau()
 {
- phi_desired = -4.27058949/(rpm1 + 1.02102643)
- - 18.66648244*V_z*V_z/(rpm1 - 12.31192228)
- + 13.48316539*V_z/rpm1
+ phi_desired = -4.27058949/(rpm + 1.02102643)
+ - 18.66648244*V_z*V_z/(rpm - 12.31192228)
+ + 13.48316539*V_z/rpm
  + 0.02156654*V_z*V_z
  - 1.45204798*V_z
  + 14.98632206;
@@ -177,9 +177,9 @@ float Copter::ModeFlip::max_tau()
 
 float Copter::ModeFlip::max_F()
 {
- phi_desired = 3.31448333/(rpm1 + 46.4440510)
- - 24.6467786*V_z*V_z/(rpm1 + 9.07472533)
- + 55.4865572*V_z/rpm1
+ phi_desired = 3.31448333/(rpm + 46.4440510)
+ - 24.6467786*V_z*V_z/(rpm + 9.07472533)
+ + 55.4865572*V_z/rpm
  + 0.0234441090*V_z*V_z
  - 1.18983342*V_z
  + 8.71212789;
