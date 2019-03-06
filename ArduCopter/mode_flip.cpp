@@ -48,7 +48,10 @@ void Copter::ModeFlip::run()
 {
 
   //update states
-  update_states();
+  //update_states();
+  rpm = RPM.get_rpm(0);
+  height = _inav.get_altitude();
+  V_z = _inav.get_velocity_z();
   //stabilize helicopter
   attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
 
