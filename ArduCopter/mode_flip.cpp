@@ -50,12 +50,14 @@ void Copter::ModeFlip::run()
   //update states
   //update_states();
   //rpm = RPM.get_rpm(0);
-  rpm=0;
-  height = _inav.get_altitude();
-  V_z = _inav.get_velocity_z();
+  // height = _inav.get_altitude();
+  // V_z = _inav.get_velocity_z();
+  rpm = 0;
+  height = 0;
+  V_z = 0;
   //stabilize helicopter
   attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
-
+  attitude_control->set_throttle_out(0, false, g.throttle_filt);
 
   //state determination could turn into its own function
   if (height > 40 && state == AutoRot_Takeoff)       //change 40 to a predefed value
@@ -153,7 +155,7 @@ void zero_tau()
   - 4.0994168;
 
   phi_desired_scaled = phi_desired * K; //throttle must be 0->1
-  //attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+  attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 }
 
