@@ -256,7 +256,7 @@ private:
     } rangefinder_state = { false, false, 0, 0 };
 
 #if RPM_ENABLED == ENABLED
-    static AP_RPM rpm_sensor;
+    AP_RPM rpm_sensor;
 #endif
 
     // Inertial Navigation EKF
