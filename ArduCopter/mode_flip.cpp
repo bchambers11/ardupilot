@@ -122,7 +122,7 @@ void Copter::ModeFlip::run()
   }
 }
 
-void update_states()
+void Copter::ModeFlip::update_states()
 {
   //FIX
   //rpm = RPM.get_rpm(0);
@@ -134,7 +134,7 @@ void update_states()
   //V_z = 0;
 }
 
-bool detectEngineFailure()
+bool Copter::ModeFlip::detectEngineFailure()
 {
   lastReading = reading;
   //FIX
@@ -162,7 +162,7 @@ float Copter::ModeFlip::zero_tau()
   //attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 }
 
-float max_tau()
+float Copter::ModeFlip::max_tau()
 {
  phi_desired = -4.27058949/(rpm + 1.02102643)
  - 18.66648244*V_z*V_z/(rpm - 12.31192228)
@@ -175,7 +175,7 @@ float max_tau()
  //attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 }
 
-float max_F()
+float Copter::ModeFlip::max_F()
 {
  phi_desired = 3.31448333/(rpm + 46.4440510)
  - 24.6467786*V_z*V_z/(rpm + 9.07472533)
@@ -188,7 +188,7 @@ return phi_desired*K;
 //attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 }
 
-bool checkForLanding()
+bool Copter::ModeFlip::checkForLanding()
 {
   //comparing energy will happen here
   return false;
