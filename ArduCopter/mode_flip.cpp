@@ -48,11 +48,10 @@ void Copter::ModeFlip::run()
 {
 
   //update states
-  //update_states();
   rpm = copter.rpm_sensor.get_rpm(0);
   height = copter.inertial_nav.get_altitude();
-  //height = copter.baro_alt;
   V_z  = copter.inertial_nav.get_velocity_z();
+  update_states();
   //rpm = 0;
   //stabilize helicopter
   attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
@@ -124,14 +123,11 @@ void Copter::ModeFlip::run()
 
 void Copter::ModeFlip::update_states()
 {
-  //FIX
-  //rpm = RPM.get_rpm(0);
-  rpm = 0;
-  //these two functions for getting variables need to be tested
-  //height = _inav.get_altitude();
-  //V_z = _inav.get_velocity_z();
-  //height = 0;
-  //V_z = 0;
+  //update states
+  rpm = copter.rpm_sensor.get_rpm(0);
+  height = copter.inertial_nav.get_altitude();
+  V_z  = copter.inertial_nav.get_velocity_z();
+
 }
 
 bool Copter::ModeFlip::detectEngineFailure()
