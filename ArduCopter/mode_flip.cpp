@@ -48,14 +48,10 @@ void Copter::ModeFlip::run()
 {
 
   //update states
-  rpm = copter.rpm_sensor.get_rpm(0);
-  height = copter.inertial_nav.get_altitude();
-  V_z  = copter.inertial_nav.get_velocity_z();
   update_states();
-  //rpm = 0;
+
   //stabilize helicopter
   attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(0, 0, 0);
-  attitude_control->set_throttle_out(0, false, g.throttle_filt);
 
   //state determination could turn into its own function
   if (height > 40 && state == AutoRot_Takeoff)       //change 40 to a predefed value
@@ -118,6 +114,12 @@ void Copter::ModeFlip::run()
         attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 
+  AP::logger().Write("ATRD","TimeUS,RPM,Height,Velocity","Qfff",
+                                      AP_HAL::micros64(),
+                                      (double)rpm,
+                                      (double)Height,
+                                      (double)V_z);
+                                      
   }
 }
 
