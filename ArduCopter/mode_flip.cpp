@@ -117,9 +117,9 @@ void Copter::ModeFlip::run()
   AP::logger().Write("ATRD","TimeUS,RPM,Height,Velocity","Qfff",
                                       AP_HAL::micros64(),
                                       (double)rpm,
-                                      (double)Height,
+                                      (double)height,
                                       (double)V_z);
-                                      
+
   }
 }
 
