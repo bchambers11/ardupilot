@@ -114,11 +114,11 @@ void Copter::ModeFlip::run()
         attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
 
 
-  AP::logger().Write("ATRD","TimeUS,RPM,Height,Velocity","Qfff",
-                                      AP_HAL::micros64(),
-                                      (double)rpm,
-                                      (double)height,
-                                      (double)V_z);
+  // AP::logger().Write("ATRD","TimeUS,RPM,Height,Velocity","Qfff",
+  //                                     AP_HAL::micros64(),
+  //                                     (double)rpm,
+  //                                     (double)height,
+  //                                     (double)V_z);
 
   }
 }
