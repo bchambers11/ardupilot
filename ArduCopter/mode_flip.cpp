@@ -39,6 +39,8 @@ bool Copter::ModeFlip::init(bool ignore_checks)
        return false;
    }
 
+   Log_Write_Event(DATA_FLIP_START);
+
    return true;
 }
 
@@ -112,6 +114,10 @@ void Copter::ModeFlip::run()
     case AutoRot_Landing:
         max_F();  //Maximize upward acceleration to slow down
         attitude_control->set_throttle_out(phi_desired_scaled, false, g.throttle_filt);
+        Log_Write_Event(DATA_FLIP_END);
+
+        break;
+
 
 
   // AP::logger().Write("ATRD","TimeUS,RPM,Height,Velocity","Qfff",
