@@ -28,6 +28,15 @@ float phi_desired,phi_desired_scaled;
 
 AutoRotationState state = AutoRot_Takeoff;
 
+// Autorotation states
+enum AutoRotationState {
+    AutoRot_Takeoff,
+    AutoRot_Idle,
+    AutoRot_Inititate,
+    AutoRot_Freefall,
+    AutoRot_Landing
+};
+
 // flip_init - initialise flip controller
 bool Copter::ModeFlip::init(bool ignore_checks)
 {

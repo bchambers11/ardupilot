@@ -185,14 +185,14 @@ enum AltHoldModeState {
     AltHold_Flying,
     AltHold_Landed
 };
-// Autorotation states
-enum AutoRotationState {
-    AutoRot_Takeoff,
-    AutoRot_Idle,
-    AutoRot_Inititate,
-    AutoRot_Freefall,
-    AutoRot_Landing
-};
+// // Autorotation states
+// enum AutoRotationState {
+//     AutoRot_Takeoff,
+//     AutoRot_Idle,
+//     AutoRot_Inititate,
+//     AutoRot_Freefall,
+//     AutoRot_Landing
+// };
 
 // Loiter states
 enum LoiterModeState {
