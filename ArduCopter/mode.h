@@ -1195,42 +1195,42 @@ private:
     uint32_t reach_wp_time_ms = 0;  // time since vehicle reached destination (or zero if not yet reached)
 };
 
-class ModeAutoRoto : public Mode {
+// class ModeAutoRoto : public Mode {
+//
+// public:
+//     using Copter::Mode::Mode;
+//     //ModeAutoRoto(Copter &copter) : Copter::Mode(copter) { }
+//     bool init(bool ignore_checks) override;
+//     void run() override;
+//     //bool requires_GPS() const override { return false; }
+//
+//
+// protected:
+//     const char *name() const override { return "AUTOROT"; }
+//     const char *name4() const override { return "ATRO"; }
+//
+// private:
+//     void update_states();
+//     bool detectEngineFailure();
+//     void zero_tau();
+//     void max_tau();
+//     void max_F();
+//     bool checkForLanding();
+//
+// };
 
-public:
-    using Copter::Mode::Mode;
-    //ModeAutoRoto(Copter &copter) : Copter::Mode(copter) { }
-    bool init(bool ignore_checks) override;
-    void run() override;
-    //bool requires_GPS() const override { return false; }
-
-
-protected:
-    const char *name() const override { return "AUTOROT"; }
-    const char *name4() const override { return "ATRO"; }
-
-private:
-    void update_states();
-    bool detectEngineFailure();
-    void zero_tau();
-    void max_tau();
-    void max_F();
-    bool checkForLanding();
-
-};
-
-class ModeTest : public Mode {
-
-public:
-  using Copter::Mode::Mode;
-  //ModeTest(Copter &copter) : Copter::Mode(copter) { }
-  bool init(bool ignore_checks) override;
-  void run() override;
-
-  //bool requires_GPS() const override { return false; }
-
-protected:
-  const char *name() const override { return "TEST";}
-  const char *name4() const override { return "TEST";}
-
-};
+// class ModeTest : public Mode {
+//
+// public:
+//   using Copter::Mode::Mode;
+//   //ModeTest(Copter &copter) : Copter::Mode(copter) { }
+//   bool init(bool ignore_checks) override;
+//   void run() override;
+//
+//   //bool requires_GPS() const override { return false; }
+//
+// protected:
+//   const char *name() const override { return "TEST";}
+//   const char *name4() const override { return "TEST";}
+//
+// };
