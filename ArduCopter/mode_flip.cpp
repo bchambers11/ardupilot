@@ -26,7 +26,7 @@ float cutoff = 1;
 
 float phi_desired,phi_desired_scaled;
 
-AutoRotationState state = AutoRot_Takeoff;
+
 
 // Autorotation states
 enum AutoRotationState {
@@ -41,7 +41,7 @@ enum AutoRotationState {
 bool Copter::ModeFlip::init(bool ignore_checks)
 {
   //initialize state
-
+  AutoRotationState state = AutoRot_Takeoff;
    // if landed and the mode we're switching from does not have manual throttle and the throttle stick is too high
    if (motors->armed() && ap.land_complete && !copter.flightmode->has_manual_throttle() &&
            (get_pilot_desired_throttle(channel_throttle->get_control_in(), copter.g2.acro_thr_mid) > copter.get_non_takeoff_throttle())) {
