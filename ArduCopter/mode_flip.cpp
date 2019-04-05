@@ -25,7 +25,8 @@ float reading, lastReading, acc;
 float cutoff = 1;
 
 float phi_desired,phi_desired_scaled;
-
+int i = 0;
+int t = 0;
 
 
 // Autorotation states
@@ -36,16 +37,16 @@ enum AutoRotationState {
     AutoRot_Freefall,
     AutoRot_Landing
 };
-AutoRotationState state = AutoRot_Takeoff;
+//AutoRotationState state = AutoRot_Takeoff;
 
 // flip_init - initialise flip controller
 bool Copter::ModeFlip::init(bool ignore_checks)
 {
   //initialize state
    // if landed and the mode we're switching from does not have manual throttle and the throttle stick is too high
-   if (motors->armed() && ap.land_complete && !copter.flightmode->has_manual_throttle() &&
-           (get_pilot_desired_throttle(channel_throttle->get_control_in(), copter.g2.acro_thr_mid) > copter.get_non_takeoff_throttle())) {
-       return false;
+   //if (motors->armed() && ap.land_complete && !copter.flightmode->has_manual_throttle() &&
+    //       (get_pilot_desired_throttle(channel_throttle->get_control_in(), copter.g2.acro_thr_mid) > copter.get_non_takeoff_throttle())) {
+      // return false;
    }
 
    Log_Write_Event(DATA_FLIP_START);
@@ -57,7 +58,16 @@ bool Copter::ModeFlip::init(bool ignore_checks)
 // should be called at 100hz or more
 void Copter::ModeFlip::run()
 {
-
+i = i + 1;
+if (i > 20)
+{
+  t = t + 1;
+  if (t < 1000)
+  {
+  attitude_control->set_throttle_out(t*.0001, false, g.throttle_filt);
+  i = 0;
+}
+}
   //update states
   update_states();
 
