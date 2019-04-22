@@ -47,9 +47,9 @@ bool Copter::ModeFlip::init(bool ignore_checks)
    //if (motors->armed() && ap.land_complete && !copter.flightmode->has_manual_throttle() &&
     //       (get_pilot_desired_throttle(channel_throttle->get_control_in(), copter.g2.acro_thr_mid) > copter.get_non_takeoff_throttle())) {
       // return false;
-   }
+   //}
 
-   Log_Write_Event(DATA_FLIP_START);
+   //Log_Write_Event(DATA_FLIP_START);
 
    return true;
 }
